@@ -7,22 +7,18 @@ using namespace std;
 class Solution {
 	public :
 		int *result;
-		int solve(int idx,vector<int>& nums){
-			if(idx < 0){
-				return 0;	
-			}	
-			if(result[idx]>=0){
-				return result[idx];	
-			}
-			result[idx]= max(nums[idx]+solve(idx-2,nums),solve(idx-1,nums));
-			return result[idx];
-		}		
 		int rob(vector<int>& nums){
+			if(nums.size() == 0) return 0;
+			if(nums.size() == 1) return nums[0];
 			result=new int[nums.size()]; 
 			for(int i=nums.size()-1;i>=0;--i){
-				result[i]=-1;	
+				result[i]=0;	
 			}
-			return solve(nums.size()-1,nums);
+			result[0]=nums[0];
+			result[1]=max(nums[1],nums[0]);
+			for(int idx=2;idx < nums.size();++idx)
+				result[idx]= max(nums[idx]+result[idx-2],result[idx-1]);
+			return result[nums.size()-1];
 		}
 };
 int main(){
